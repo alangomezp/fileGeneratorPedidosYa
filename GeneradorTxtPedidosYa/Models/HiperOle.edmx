@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HiperOleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HiperOle.dbo.Sucursales_Activas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Sucursales_Activas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CODIGO" Type="nvarchar" MaxLength="15" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="255" />
+          <Property Name="EMPRESA" Type="nvarchar" MaxLength="5" />
+          <Property Name="PEDIDOSYA" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <Function Name="Reporte_PedidosYa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SUCURSAL" Type="nvarchar" Mode="In" />
+          <Parameter Name="CODIGOS" Type="nvarchar(max)" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="int" Nullable="false" />
+                <Property Name="CODIGO" Type="nvarchar" MaxLength="20" />
+                <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+                <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+                <Property Name="EXISTENCIA" Type="decimal" Precision="18" Scale="2" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <EntityContainer Name="HiperOleModelStoreContainer">
+          <EntitySet Name="Sucursales_Activas" EntityType="Self.Sucursales_Activas" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Sucursales_Activas].[ID] AS [ID], 
+[Sucursales_Activas].[CODIGO] AS [CODIGO], 
+[Sucursales_Activas].[DESCRIPCION] AS [DESCRIPCION], 
+[Sucursales_Activas].[EMPRESA] AS [EMPRESA], 
+[Sucursales_Activas].[PEDIDOSYA] AS [PEDIDOSYA]
+FROM [dbo].[Sucursales_Activas] AS [Sucursales_Activas]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HiperOleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="Reporte_PedidosYa_Result">
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CODIGO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="true" />
+          <Property Name="EXISTENCIA" Type="Decimal" Precision="18" Scale="2" Nullable="true" />
+          <Property Type="String" Name="DESCRIPCION" Nullable="true" MaxLength="60" />
+          <Property Type="Decimal" Name="PRICE" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityContainer Name="HiperOleEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="Reporte_PedidosYa" IsComposable="true" ReturnType="Collection(HiperOleModel.Reporte_PedidosYa_Result)">
+            <Parameter Name="SUCURSAL" Mode="In" Type="String" />
+            <Parameter Name="CODIGOS" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Sucursales_Activas" EntityType="HiperOleModel.Sucursales_Activas" />
+        </EntityContainer>
+        <EntityType Name="Sucursales_Activas">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODIGO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EMPRESA" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="PEDIDOSYA" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HiperOleModelStoreContainer" CdmEntityContainer="HiperOleEntities">
+          <FunctionImportMapping FunctionName="HiperOleModel.Store.Reporte_PedidosYa" FunctionImportName="Reporte_PedidosYa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HiperOleModel.Reporte_PedidosYa_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="EXISTENCIA" ColumnName="EXISTENCIA" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Sucursales_Activas">
+            <EntityTypeMapping TypeName="HiperOleModel.Sucursales_Activas">
+              <MappingFragment StoreEntitySet="Sucursales_Activas">
+                <ScalarProperty Name="PEDIDOSYA" ColumnName="PEDIDOSYA" />
+                <ScalarProperty Name="EMPRESA" ColumnName="EMPRESA" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
